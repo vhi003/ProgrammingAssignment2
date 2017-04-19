@@ -5,7 +5,7 @@
 
 ## Write a short comment describing this function - creates a matrix
 
-> makemyVector <- function (x = matrix(1, 2, 3, 4)){
+> makeCacheMatrix <- function (x = matrix(1, 2, 3, 4)){
 +     inv <- NULL
 +     set <- function (y) {
 +         x<<-y
@@ -16,7 +16,7 @@
 + getInverse <- function() inv
 + list( set = set, get = get, setInverse = setInverse, getInverse = getInverse)
 + }
-> my_assign <-makemyVector(matrix(1))
+> my_assign <-makeCacheMatrix(matrix(1))
 > 
 > 
 > 
@@ -24,7 +24,7 @@
      [,1]
 [1,]    1
 > 
-> my_assign2 <-makemyVector(matrix(1:4, 2, 4))
+> my_assign2 <-makeCacheMatrix(matrix(1:4, 2, 4))
 > my_assign2$get()
      [,1] [,2] [,3] [,4]
 [1,]    1    3    1    3
@@ -36,4 +36,13 @@
 
 cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
+        inv <- x$getInverse()
+        if(!is.null(inv)){
+                message("getting cached data")
+                return(inv)
+        }
+        mat <- x$get()
+        inv <- solve(mat, ...)
+        x$setInverse()
+        inv        
 }
